@@ -1,13 +1,15 @@
 /**
  * Created by levy on 2018/7/10.
  */
-import META from '@/const/meta.js'
-
-export default function({store, app}) {
+export default async function({store, app}) {
   // if (process.server) return
 
   if (!store.state.meta.appName) {
-    store.commit('update', {meta: META})
+    try {
+      await store.dispatch('fetchMetaInfo', {projectNo: process.env.PROJECT_NO})
+    } catch (e) {
+      console.log('meta error: ', e)
+    }
 
     let meta = store.state.meta
     let head = app.head
